@@ -1,12 +1,18 @@
-from microbit import *
 moisture = 0
+first_digit = 0
 
 def on_forever():
-    global moisture
+    global moisture, first_digit
     moisture = pins.analog_read_pin(AnalogPin.P1)
     serial.write_number(moisture)
-    serial.write_string("\n")
-    first_digit = (int)moisture / 100
-    display.show_number(first_digit)
-    basic.pause(200)
+    if moisture < 400:
+        serial.write_string("too low")
+    else:
+        serial.write_string("ok")
+    serial.write_string("" + ("\n"))
+    first_digit = Math.floor(moisture / 100)
+    basic.show_number(first_digit)
+    basic.pause(1000)
+    basic.clear_screen()
+    basic.pause(5000)
 basic.forever(on_forever)
